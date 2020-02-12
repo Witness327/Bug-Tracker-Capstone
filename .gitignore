@@ -1,0 +1,10 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/Bug-Tracker2020/Bug-Tracker2020/bin/Debug/netcoreapp3.0
+/Bug-Tracker2020/Bug-Tracker2020/bower_components/bootstrap
+/Bug-Tracker2020/Bug-Tracker2020/obj/Debug/netcoreapp3.0
+/Bug-Tracker2020/Bug-Tracker2020/obj
+/.vs
+/Bug-Tracker2020/.vs/Bug-Tracker2020

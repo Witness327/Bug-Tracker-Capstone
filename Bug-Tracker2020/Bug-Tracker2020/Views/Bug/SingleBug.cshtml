@@ -1,0 +1,76 @@
+﻿@model Bug_Tracker2020.Models.Bug
+@{
+    ViewData["Title"] = "View Bug";
+}
+
+<h1>View A Single Bug - Admin</h1>
+
+@* Bootstrap theme that I customized. See below.*@
+
+<div class="container-fluid">
+    <div class="row content">
+        <div class="col-sm-9">
+            <div class="well">
+                <h4>Ticket: @Model.ID</h4>
+                <h3>@Model.Status</h3>
+            </div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="well">
+                        <h4>Date</h4>
+                        <p>@Model.CreatedDate</p>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="well">
+                        <h4>User</h4>
+                        <p>@Model.UserID</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="well">
+                        <h4>Subject</h4>
+                        <p>@Model.Subject</p>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="well">
+                        <h4>Admin</h4>
+                        <p>@Model.AdminID</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="well">
+                        <h4>Description</h4>
+                        <p>Description</p>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="well">
+                        <h4>Comments</h4>
+                        <form action="/Comment/Add">
+                            <input type="submit" value="Add a Comment" />
+                            @*#TODO - add capability to pass this bud id to the comment*@
+
+                            @*<div class="form-group">
+                                    <label class="control-label">Search</label>
+                                    <input asp-for="@Model.ID" hidden />
+                                    <input class="form-control" type="submit" value="Add a Comment" />
+                                    <span class="text-danger"></span>
+                                </div>*@
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+

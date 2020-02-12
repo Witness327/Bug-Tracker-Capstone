@@ -1,0 +1,22 @@
+﻿@model Bug_Tracker2020.Models.Bug
+@{
+    ViewData["Title"] = "BugSearch";
+}
+
+<h1>Search</h1>
+
+<form asp-action="BugSearch" asp-controller="Bug" method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <div class="form-group">
+        <label class="control-label">Search</label>
+        <input asp-for="ID" class="form-control" type="number" />
+        <span class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Search" class="btn btn-primary" />
+    </div>
+</form>
+
+
+

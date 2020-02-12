@@ -1,0 +1,25 @@
+﻿@model Bug_Tracker2020.ViewModels.AddUserViewModel
+<h1>Register</h1>
+
+<form asp-controller="User" asp-action="Add" method="post">
+
+    <div class="form-group">
+        <label asp-for="EmailAddress"></label>
+        <input class="form-control" asp-for="EmailAddress" />
+        <span asp-validation-for="EmailAddress"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Password"></label>
+        <input class="form-control" asp-for="Password" />
+        <span asp-validation-for="Password"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ConfirmPassword"></label>
+        <input class="form-control" asp-for="ConfirmPassword" />
+        <span asp-validation-for="ConfirmPassword"></span>
+    </div>
+
+    <input type="submit" value="Add User" />
+
+</form>
