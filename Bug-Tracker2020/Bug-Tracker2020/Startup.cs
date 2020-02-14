@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Http;
 
 namespace Bug_Tracker2020
 {
@@ -34,6 +35,8 @@ namespace Bug_Tracker2020
 
             services.AddDbContext<BugDbContext>(options =>
                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
         }
 

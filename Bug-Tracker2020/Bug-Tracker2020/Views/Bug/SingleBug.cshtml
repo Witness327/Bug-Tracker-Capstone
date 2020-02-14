@@ -13,7 +13,13 @@
             <div class="well">
                 <h4>Ticket: @Model.ID</h4>
                 <h3>@Model.Status</h3>
-            </div>
+                @*TODO check the visual after I can create a bug*@
+                <<select id="cars">
+                    <option value="New">New</option>
+                    <option value="InProgress">In Progress</option>
+                    <option value="Closed">Closed</option>
+                </select>
+</div>
             <div class="row">
                 <div class="col-sm-4">
                     <div class="well">

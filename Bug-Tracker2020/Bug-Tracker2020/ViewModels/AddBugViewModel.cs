@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Bug_Tracker2020.Models;
 using Bug_Tracker2020.ViewModels;
+using Microsoft.AspNetCore.Http;
 
 
 
@@ -14,6 +15,7 @@ namespace Bug_Tracker2020.ViewModels
 {
     public class AddBugViewModel
     {
+        public int UserID { get; set; }
         [Required]
         public string CreatedDate { get; set; }
 

@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Session;
 using Microsoft.Extensions.Logging;
 using Bug_Tracker2020.Data;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 
 namespace Bug_Tracker2020.Controllers
 {
@@ -44,14 +45,14 @@ namespace Bug_Tracker2020.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-
+        //[Route("Login")]
         public IActionResult Login()
         {
             return View();
         }
 
 
-        [Route("login")]
+        
         [HttpPost]
         public ActionResult Login(string emailaddress, string password)
         {
@@ -65,7 +66,7 @@ namespace Bug_Tracker2020.Controllers
                 }
 
             }
-            return View("Index");
+            return View("/Home/Login");
         }
 
         [Route("logout")]

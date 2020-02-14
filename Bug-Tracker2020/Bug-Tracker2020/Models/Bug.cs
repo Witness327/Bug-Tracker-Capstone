@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web;
 
 
 namespace Bug_Tracker2020.Models
@@ -18,6 +19,7 @@ namespace Bug_Tracker2020.Models
         public string Status { get; set; }
         public ICollection<Comment> Comments { get; set; }
         //public Array CommentIDs { get; set; }
+        
 
     }
 }

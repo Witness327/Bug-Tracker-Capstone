@@ -17,7 +17,6 @@ namespace Bug_Tracker2020.Controllers
         {
             context = dbContext;
         }
-
         public IActionResult Index()
         {
             return View();

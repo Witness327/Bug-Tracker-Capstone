@@ -6,6 +6,8 @@ using Bug_Tracker2020.Data;
 using Bug_Tracker2020.Models;
 using Bug_Tracker2020.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Bug_Tracker2020.Controllers;
+using Microsoft.AspNetCore.Http;
 
 
 namespace Bug_Tracker2020.Controllers
@@ -52,8 +54,13 @@ namespace Bug_Tracker2020.Controllers
                 var aBug = context.Bugs.Single(b => b.ID == id);
                 return Redirect("/Bug/SingleBug?id=" + aBug.ID);
             }
+        }
 
-
+        public User Find(string emailaddress)
+        {
+            //var obj = context.Users.Where(a => a.EmailAddress.Equals(emailaddress));
+            var LoggedInUser = context.Users.Single(a => a.EmailAddress == emailaddress);
+            return LoggedInUser;
         }
 
         public IActionResult Add(AddBugViewModel bugViewModel)
@@ -62,7 +69,8 @@ namespace Bug_Tracker2020.Controllers
             {
                 Bug newBug = new Bug
                 {
-
+                    UserID = bugViewModel.UserID,
+                    //Find the userid using the email address in the session
                     CreatedDate = bugViewModel.CreatedDate,
                     Subject = bugViewModel.Subject,
                     Description = bugViewModel.Description,
