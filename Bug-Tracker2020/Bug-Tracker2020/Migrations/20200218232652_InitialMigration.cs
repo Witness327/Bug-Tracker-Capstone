@@ -7,14 +7,31 @@ namespace Bug_Tracker2020.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "Admins",
+                columns: table => new
+                {
+                    AdminID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FirstName = table.Column<string>(nullable: true),
+                    EmailAddress = table.Column<string>(nullable: true),
+                    Password = table.Column<string>(nullable: true),
+                    AdminRole = table.Column<bool>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Admins", x => x.AdminID);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
                     UserID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    FirstName = table.Column<string>(nullable: true),
                     EmailAddress = table.Column<string>(nullable: true),
                     Password = table.Column<string>(nullable: true),
-                    Admin = table.Column<bool>(nullable: false)
+                    AdminRole = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -38,6 +55,12 @@ namespace Bug_Tracker2020.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Bugs", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_Bugs_Admins_AdminID",
+                        column: x => x.AdminID,
+                        principalTable: "Admins",
+                        principalColumn: "AdminID",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Bugs_Users_UserID",
                         column: x => x.UserID,
@@ -69,6 +92,11 @@ namespace Bug_Tracker2020.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Bugs_AdminID",
+                table: "Bugs",
+                column: "AdminID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Bugs_UserID",
                 table: "Bugs",
                 column: "UserID");
@@ -86,6 +114,9 @@ namespace Bug_Tracker2020.Migrations
 
             migrationBuilder.DropTable(
                 name: "Bugs");
+
+            migrationBuilder.DropTable(
+                name: "Admins");
 
             migrationBuilder.DropTable(
                 name: "Users");

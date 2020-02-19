@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Bug_Tracker2020.Migrations
 {
     [DbContext(typeof(BugDbContext))]
-    [Migration("20200212225225_InitialMigration")]
+    [Migration("20200218232652_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -20,6 +20,30 @@ namespace Bug_Tracker2020.Migrations
                 .HasAnnotation("ProductVersion", "3.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("Bug_Tracker2020.Models.Admin", b =>
+                {
+                    b.Property<int>("AdminID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("AdminRole")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("EmailAddress")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Password")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("AdminID");
+
+                    b.ToTable("Admins");
+                });
 
             modelBuilder.Entity("Bug_Tracker2020.Models.Bug", b =>
                 {
@@ -50,6 +74,8 @@ namespace Bug_Tracker2020.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("ID");
+
+                    b.HasIndex("AdminID");
 
                     b.HasIndex("UserID");
 
@@ -89,10 +115,13 @@ namespace Bug_Tracker2020.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<bool>("Admin")
+                    b.Property<bool>("AdminRole")
                         .HasColumnType("bit");
 
                     b.Property<string>("EmailAddress")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirstName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Password")
@@ -105,6 +134,12 @@ namespace Bug_Tracker2020.Migrations
 
             modelBuilder.Entity("Bug_Tracker2020.Models.Bug", b =>
                 {
+                    b.HasOne("Bug_Tracker2020.Models.Admin", null)
+                        .WithMany("Bugs")
+                        .HasForeignKey("AdminID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Bug_Tracker2020.Models.User", null)
                         .WithMany("Bugs")
                         .HasForeignKey("UserID")
