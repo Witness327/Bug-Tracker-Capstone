@@ -7,7 +7,10 @@ using System.Threading.Tasks;
 namespace Bug_Tracker2020.ViewModels
 {
     public class AddUserViewModel
-    { 
+    {
+        [Required]
+        public string FirstName { get; set; }
+
         [Required]
         [EmailAddress]
         public string EmailAddress { get; set; }

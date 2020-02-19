@@ -54,26 +54,45 @@ namespace Bug_Tracker2020.Controllers
 
         
         [HttpPost]
-        public ActionResult Login(string emailaddress, string password)
+        public ActionResult Login(string emailaddress, string password, string firstname)
         {
             if (ModelState.IsValid)
             {
-                var obj = context.Users.Where(a => a.EmailAddress.Equals(emailaddress) && a.Password.Equals(password)).FirstOrDefault();
-                if (obj != null)
-                {
-                    HttpContext.Session.SetString("emailaddress", emailaddress);
-                    return View("Welcome");
+                //Logic if Person is an admin
+                if (emailaddress.Contains("bugtracker.com")){
+                    var obj = context.Admins.Where(a => a.EmailAddress.Equals(emailaddress) && a.Password.Equals(password)).FirstOrDefault();
+                    if (obj != null)
+                    {
+                        HttpContext.Session.SetString("emailaddress", emailaddress);
+                        HttpContext.Session.SetInt32("id", obj.AdminID);
+                        HttpContext.Session.SetString("firstname", firstname);
+                        return View("Welcome");
+                    }
+
+                }
+                //Logic for all non-Admins
+                else {
+                    var obj = context.Users.Where(a => a.EmailAddress.Equals(emailaddress) && a.Password.Equals(password)).FirstOrDefault();
+                    if (obj != null)
+                    {
+                        HttpContext.Session.SetString("emailaddress", emailaddress);
+                        HttpContext.Session.SetInt32("id", obj.UserID);
+                        HttpContext.Session.SetString("firstname", obj.FirstName);
+
+                        return View("Welcome");
+                    }
                 }
 
             }
-            return View("/Home/Login");
+            //TODO: We need to create a message for incorrect password
+            return View("Login");
         }
 
         [Route("logout")]
         [HttpGet]
         public IActionResult Logout()
         {
-            HttpContext.Session.Remove("EmailAddress");
+            HttpContext.Session.Remove("emailaddress");
             return RedirectToAction("Index");
         }
     }

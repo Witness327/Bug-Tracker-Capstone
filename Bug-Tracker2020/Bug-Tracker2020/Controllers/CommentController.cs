@@ -52,7 +52,7 @@ namespace Bug_Tracker2020.Controllers
             {
                 Comment newComment = new Comment
                 {
-                    UserID = 7,
+                    UserID = addCommentViewModel.UserID,
                     Date = addCommentViewModel.Date,
                     CommentBody = addCommentViewModel.CommentBody,
                     Bug = Find(addCommentViewModel.Bug.ID),
@@ -74,22 +74,30 @@ namespace Bug_Tracker2020.Controllers
             return View();
 
         }
-
-
-
-        // GET: Comment/Edit/5
-        public ActionResult Edit(int id)
+        //Possible Deletion
+        public IActionResult LocateComments(int id)
         {
-            return View();
+
+            // new IList<Comment> CommList;
+            //TODO addthe feature to filter by user ID
+            var aComment = context.Comments.OrderByDescending(c => c.Bug.ID == id);
+
+
+
+            return View(aComment);
         }
 
 
 
-        // GET: Comment/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
+        //// GET: Comment/Edit/5
+        //public ActionResult Edit(int id)
+        //{
+        //    return View();
+        //}
+
+
+
+
 
         // POST: Comment/Delete/5
         [HttpPost]
@@ -98,7 +106,9 @@ namespace Bug_Tracker2020.Controllers
         {
             try
             {
-                // TODO: Add delete logic here
+                var delcomment = context.Comments.Find(id);
+                context.Comments.Remove(delcomment);
+                context.SaveChanges();
 
                 return RedirectToAction(nameof(Index));
             }

@@ -1,0 +1,25 @@
+﻿@model List<Bug_Tracker2020.Models.Bug>
+
+
+@{
+    ViewData["Title"] = "User Bugs";
+}
+
+<h1>User Bugs</h1>
+
+@foreach (var allBugs in Model)
+{
+    <div class="card text-white bg-primary mb-3" style="max-width: 20rem;">
+        <div class="card-header">@allBugs.Status Ticket#  @allBugs.ID - [@allBugs.CreatedDate] </div>
+        <div class="card-body">
+            <h4 class="card-title">Subject: @allBugs.Subject</h4>
+            <p class="card-text">Description: @allBugs.Description</p>
+            <p class="card-text">User ID: @allBugs.UserID</p>
+            <p class="card-text">Admin ID: @allBugs.AdminID</p>
+            <h5>Comments</h5>
+            <form action="/Comment/Add">
+                <input type="submit" value="Add a Comment" />
+            </form>
+        </div>
+    </div>
+}

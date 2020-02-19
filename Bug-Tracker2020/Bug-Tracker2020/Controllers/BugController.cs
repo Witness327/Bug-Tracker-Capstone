@@ -8,7 +8,7 @@ using Bug_Tracker2020.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Bug_Tracker2020.Controllers;
 using Microsoft.AspNetCore.Http;
-
+using Microsoft.AspNetCore.Authorization;
 
 namespace Bug_Tracker2020.Controllers
 {
@@ -25,7 +25,7 @@ namespace Bug_Tracker2020.Controllers
         {
             return View();
         }
-
+        
         public IActionResult SingleBug(int id)
         {
             if (id == 0)
@@ -37,7 +37,39 @@ namespace Bug_Tracker2020.Controllers
             return View(aBug);
         }
 
-        public IActionResult BugSearch()
+        public IActionResult UserSingleBug(int id)
+        {
+            if (id == 0)
+            {
+                //ToDO - Add logic to handle if no bug exists.
+                return Redirect("/");
+            }
+            var aBug = context.Bugs.Single(b => b.ID == id);
+            return View(aBug);
+        }
+
+        public IActionResult UserBugs()
+        {
+            if (HttpContext.Session.GetString("emailaddress")==null)
+            {
+                return Redirect("Login");
+            }
+
+            User user = context.Users.Single(u => u.EmailAddress == HttpContext.Session.GetString("EmailAddress"));
+            List<Bug> bugs = context.Bugs.Where(b => b.UserID == user.UserID).ToList();
+            return View(bugs);
+        }
+
+        public IActionResult AllBugs()
+        {
+
+
+            //User user = context.Users.Single(u => u.EmailAddress == HttpContext.Session.GetString("EmailAddress"));
+            List<Bug> allbugs = context.Bugs.ToList();
+            return View(allbugs);
+        }
+
+            public IActionResult BugSearch()
         {
             return View();
 
@@ -51,9 +83,44 @@ namespace Bug_Tracker2020.Controllers
             }
             else
             {
-                var aBug = context.Bugs.Single(b => b.ID == id);
-                return Redirect("/Bug/SingleBug?id=" + aBug.ID);
+                try {
+                    var aBug = context.Bugs.Single(b => b.ID == id);
+                    return Redirect("/Bug/UserSingleBug?id=" + aBug.ID);
+                }
+                catch
+                {
+                    
+                    return Redirect("/Error");
+                }
+               
             }
+        }
+
+        public IActionResult UpdateStatus(string status, int id)
+        {
+
+            var aBug = context.Bugs.Single(b => b.ID == id);
+            aBug.Status = status;
+            context.Bugs.Update(aBug);
+            context.SaveChanges();
+
+            return Redirect("Index");
+        }
+
+        public ICollection<Comment> Comments;
+
+        public ICollection<Comment> LocateComments(int id)
+        {
+
+            // new IList<Comment> CommList;
+            //TODO addthe feature to filter by user ID
+            var aComment = context.Comments.OrderByDescending(c => c.Bug.ID == id);
+            foreach (var comm in aComment)
+            {
+                Comments.Add(comm);
+            }
+
+            return Comments;
         }
 
         public User Find(string emailaddress)
@@ -65,8 +132,10 @@ namespace Bug_Tracker2020.Controllers
 
         public IActionResult Add(AddBugViewModel bugViewModel)
         {
+            
             if (ModelState.IsValid)
             {
+
                 Bug newBug = new Bug
                 {
                     UserID = bugViewModel.UserID,
@@ -75,16 +144,16 @@ namespace Bug_Tracker2020.Controllers
                     Subject = bugViewModel.Subject,
                     Description = bugViewModel.Description,
                     Status = "New",
-
+                    AdminID = 1,
                 };
                 context.Bugs.Add(newBug);
                 context.SaveChanges();
 
-
-                return Redirect("/Bug/SingleBug?id=" + newBug.ID);
+                return Redirect("/Bug/UserSingleBug?id=" + newBug.ID);
             }
 
             return View();
         }
+
     }
 }

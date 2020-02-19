@@ -15,8 +15,9 @@ namespace Bug_Tracker2020.ViewModels
 {
     public class AddBugViewModel
     {
-        public int UserID { get; set; }
         [Required]
+        public int UserID { get; set; }
+        
         public string CreatedDate { get; set; }
 
         [Required]
@@ -26,10 +27,25 @@ namespace Bug_Tracker2020.ViewModels
         [Display(Description = "Description")]
         public string Description { get; set; }
 
+        public List<SelectListItem> AdminCategories { get; set; }
 
 
         public AddBugViewModel()
         {
+        }
+
+        public AddBugViewModel(IEnumerable<Admin> categories)
+        {
+
+            AdminCategories = new List<SelectListItem>();
+            foreach (Admin category in categories)
+            {
+                AdminCategories.Add(new SelectListItem
+                {
+                    Text = category.FirstName,
+                    Value = category.AdminID.ToString(),
+                });
+            }
         }
     }
 }

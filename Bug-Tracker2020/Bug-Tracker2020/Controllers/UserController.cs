@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Bug_Tracker2020.Models;
 using Bug_Tracker2020.Data;
 using Bug_Tracker2020.ViewModels;
+using Microsoft.AspNetCore.Http;
 
 namespace Bug_Tracker2020.Controllers
 {
@@ -20,6 +21,7 @@ namespace Bug_Tracker2020.Controllers
         }
 
 
+
         public IActionResult Add()
         {
             AddUserViewModel addUserViewModel = new AddUserViewModel();
@@ -31,18 +33,50 @@ namespace Bug_Tracker2020.Controllers
         {
             if (ModelState.IsValid)
             {
-
-                User newUser = new User
+                if (context.Admins.Count() == 0)
                 {
-                    EmailAddress = addUserViewModel.EmailAddress,
-                    Password = addUserViewModel.Password,
-                    Admin = addUserViewModel.Admin,
-                };
+                    Admin unassignedAdmin = new Admin
+                    {
 
-                context.Users.Add(newUser);
-                context.SaveChanges();
+                        FirstName = "Unassigned",
+                        EmailAddress = "Unassigned@bugtracker.com",
+                        Password = "Unassigned123",
+                        AdminRole = true,
+                    };
+                    context.Admins.Add(unassignedAdmin);
+                    context.SaveChanges();
+                }
+                if (addUserViewModel.EmailAddress.Contains("@bugtracker.com")){
 
-                return Redirect("/");
+                    Admin newAdmin = new Admin
+                    {
+                        FirstName = addUserViewModel.FirstName,
+                        EmailAddress = addUserViewModel.EmailAddress,
+                        Password = addUserViewModel.Password,
+                        AdminRole = true,
+                    };
+
+                    context.Admins.Add(newAdmin);
+                    context.SaveChanges();
+
+                    return Redirect("/");
+                }
+
+                else
+                {
+                    User newUser = new User
+                    {
+                        FirstName = addUserViewModel.FirstName,
+                        EmailAddress = addUserViewModel.EmailAddress,
+                        Password = addUserViewModel.Password,
+                        AdminRole = false,
+                    };
+
+                    context.Users.Add(newUser);
+                    context.SaveChanges();
+
+                    return Redirect("/");
+                }
             }
 
             return View();

@@ -3,7 +3,7 @@
     ViewData["Title"] = "View Bug";
 }
 
-<h1>View A Single Bug - Admin</h1>
+<h1>View A Single Bug</h1>
 
 @* Bootstrap theme that I customized. See below.*@
 @using Microsoft.AspNetCore.Http;
@@ -14,20 +14,6 @@
             <div class="well">
                 <h4>Ticket: @Model.ID</h4>
                 <h3>@Model.Status</h3>
-                <form asp-controller="Bug" asp-action="UpdateStatus" method="post">
-                    <div class="form-group">
-                        <label asp-for="Status"></label>
-                        <input type="hidden" asp-for="UserID" value="@Context.Session.GetInt32("ID")" />
-                        <input type="hidden" asp-for="ID" value=@Model.ID ; />
-                        <select asp-for="Status" class="form-control">
-                            <option value="InProgress">In Progress</option>
-                            <option value="Closed">Closed</option>
-                        </select>
-                        <span asp-validation-for="Status"></span>
-                    </div>
-                    <input type="submit" value="Update" />
-
-                </form>
             </div>
             <div class="row">
                 <div class="col-sm-4">

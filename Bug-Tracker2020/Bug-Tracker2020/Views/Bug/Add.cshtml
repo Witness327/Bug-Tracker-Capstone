@@ -6,18 +6,21 @@
 
 <h1>Report A Bug</h1>
 
+
+
+@using Microsoft.AspNetCore.Http;
+
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Add" asp-controller="Bug" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-               <input asp-for="UserID" class="form-control" value="UserID" type="number" />
+                <input asp-for="UserID" class="form-control" value=@Context.Session.GetInt32("id") type="hidden" />
                 <span asp-validation-for="UserID" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="CreatedDate" class="control-label">Date</label>
-                <input asp-for="CreatedDate" class="form-control" type="date" />
+                <input asp-for="CreatedDate" class="form-control" type="hidden" value=@DateTime.Now />
                 <span asp-validation-for="CreatedDate" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -38,9 +41,9 @@
 </div>
 
 @*<div>
-    <a asp-action="Index">Back to List</a>
-</div>*@
- 
+        <a asp-action="Index">Back to List</a>
+    </div>*@
+
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
