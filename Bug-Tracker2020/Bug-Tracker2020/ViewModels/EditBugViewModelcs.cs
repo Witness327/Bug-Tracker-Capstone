@@ -7,34 +7,27 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Bug_Tracker2020.Models;
 using Bug_Tracker2020.ViewModels;
 using Microsoft.AspNetCore.Http;
-
-
-
-
 namespace Bug_Tracker2020.ViewModels
 {
-    public class AddBugViewModel
+    public class EditBugViewModel
     {
-        [Required]
-        public int UserID { get; set; }
-        
+        public int ID { get; set; }
         public string CreatedDate { get; set; }
-
-        [Required]
         public string Subject { get; set; }
-
-        [Required]
-        [Display(Description = "Description")]
         public string Description { get; set; }
-
+        public string LastModifiedDate { get; set; }
+        public int UserID { get; set; }
         public string UserFirstName { get; set; }
+        [Required]
+        [Display(Name = "Admin")]
+        public int AdminID { get; set; }
         public string AdminFirstName { get; set; }
-
-
-        public AddBugViewModel()
+        public List<SelectListItem> Admins { get; set; }
+        public string Status { get; set; }
+        public ICollection<Comment> Comments { get; set; }
+        public EditBugViewModel()
         {
         }
 
-        
     }
 }

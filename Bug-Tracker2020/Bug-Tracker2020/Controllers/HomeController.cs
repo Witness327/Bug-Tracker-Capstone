@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using Bug_Tracker2020.Data;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Bug_Tracker2020.ViewModels;
 
 namespace Bug_Tracker2020.Controllers
 {
@@ -39,11 +40,11 @@ namespace Bug_Tracker2020.Controllers
             return View();
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
+        //[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        //public IActionResult Error()
+        //{
+        //    return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        //}
 
         //[Route("Login")]
         public IActionResult Login()
@@ -54,28 +55,29 @@ namespace Bug_Tracker2020.Controllers
 
         
         [HttpPost]
-        public ActionResult Login(string emailaddress, string password, string firstname)
+        public ActionResult Login(LoginViewModel loginViewModel)
         {
             if (ModelState.IsValid)
             {
                 //Logic if Person is an admin
-                if (emailaddress.Contains("bugtracker.com")){
-                    var obj = context.Admins.Where(a => a.EmailAddress.Equals(emailaddress) && a.Password.Equals(password)).FirstOrDefault();
+                if (loginViewModel.EmailAddress.Contains("bugtracker.com")){
+                    var obj = context.Admins.Where(a => a.EmailAddress.Equals(loginViewModel.EmailAddress) && a.Password.Equals(loginViewModel.Password)).FirstOrDefault();
                     if (obj != null)
                     {
-                        HttpContext.Session.SetString("emailaddress", emailaddress);
+                        HttpContext.Session.SetString("emailaddress", obj.EmailAddress);
                         HttpContext.Session.SetInt32("id", obj.AdminID);
-                        HttpContext.Session.SetString("firstname", firstname);
+                        HttpContext.Session.SetString("firstname", obj.FirstName);
+                        HttpContext.Session.SetString("AdminRole", obj.AdminRole.ToString());
                         return View("Welcome");
                     }
 
                 }
                 //Logic for all non-Admins
                 else {
-                    var obj = context.Users.Where(a => a.EmailAddress.Equals(emailaddress) && a.Password.Equals(password)).FirstOrDefault();
+                    var obj = context.Users.Where(a => a.EmailAddress.Equals(loginViewModel.EmailAddress) && a.Password.Equals(loginViewModel.Password)).FirstOrDefault();
                     if (obj != null)
                     {
-                        HttpContext.Session.SetString("emailaddress", emailaddress);
+                        HttpContext.Session.SetString("emailaddress", obj.EmailAddress);
                         HttpContext.Session.SetInt32("id", obj.UserID);
                         HttpContext.Session.SetString("firstname", obj.FirstName);
 
@@ -93,6 +95,8 @@ namespace Bug_Tracker2020.Controllers
         public IActionResult Logout()
         {
             HttpContext.Session.Remove("emailaddress");
+            HttpContext.Session.Remove("FirstName");
+ 
             return RedirectToAction("Index");
         }
     }

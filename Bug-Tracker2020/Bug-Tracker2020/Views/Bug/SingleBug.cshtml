@@ -3,100 +3,141 @@
     ViewData["Title"] = "View Bug";
 }
 
-<h1>View A Single Bug - Admin</h1>
+<h1>View A Single Bug</h1>
 
 @* Bootstrap theme that I customized. See below.*@
 @using Microsoft.AspNetCore.Http;
 
-<div class="container-fluid">
-    <div class="row content">
-        <div class="col-sm-9">
-            <div class="well">
-                <h4>Ticket: @Model.ID</h4>
-                <h3>@Model.Status</h3>
-                <form asp-controller="Bug" asp-action="UpdateStatus" method="post">
-                    <div class="form-group">
-                        <label asp-for="Status"></label>
-                        <input type="hidden" asp-for="UserID" value="@Context.Session.GetInt32("ID")" />
-                        <input type="hidden" asp-for="ID" value=@Model.ID ; />
-                        <select asp-for="Status" class="form-control">
-                            <option value="InProgress">In Progress</option>
-                            <option value="Closed">Closed</option>
-                        </select>
-                        <span asp-validation-for="Status"></span>
-                    </div>
-                    <input type="submit" value="Update" />
+@*<div class="card text-white bg-primary mb-3" style="max-width: 20rem;">
+        <div class="card-header"><h4>@Model.Status Ticket#  @Model.ID - [@Model.CreatedDate] </h4></div>
+        <div class="card-body">
+            <h4 class="card-header">Subject: @Model.Subject</h4>
+            <p class="card-text">Description: @Model.Description</p>
+            <p class="card-text">User ID: @Model.UserID</p>
+            <p class="card-text">Admin ID: @Model.AdminID</p>
+            <h5>Comments</h5>
+            <form action="/Comment/Add">
+                <input type="submit" value="Add a Comment" />
+            </form>
+        </div>
+    </div>*@
 
-                </form>
-            </div>
-            <div class="row">
-                <div class="col-sm-4">
-                    <div class="well">
-                        <h4>Date</h4>
-                        <p>@Model.CreatedDate
-                        
-                            </p>
-                    </div>
-                </div>
-                <div class="col-sm-4">
-                    <div class="well">
-                        <h4>User</h4>
-                        <p>@Model.UserID</p>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-4">
-                    <div class="well">
-                        <h4>Subject</h4>
-                        <p>@Model.Subject</p>
-                    </div>
-                </div>
-                <div class="col-sm-4">
-                    <div class="well">
-                        <h4>Admin</h4>
-                        <p>@Model.AdminID</p>
-                        <span asp-validation-for="AdminID"></span>
-                    </div>
-                </div>
-            </div>
+<div class="card text-white bg-primary mb-3" style="max-width: 20rem;">
+    <div>
+        <h4 class="card-header font-weight-bold">Ticket#  @Model.ID: @Model.CreatedDate [@Model.Status]</h4>
+    </div>
+    <div class="card-body">
+        <h4 class="card-text font-weight-bold">Subject:</h4>
+        <p>@Model.Subject</p>
+        <h4 class="card-text font-weight-bold">Description:</h4>
+        <p class="card-text">@Model.Description</p>
+        <h5 class="card-text font-weight-bold">User ID:</h5>
+        <p class="card-text">@Model.UserID</p>
+        <h5 class="card-text font-weight-bold">Admin ID:</h5>
+        <p class="card-text">@Model.AdminID</p>
+        <form asp-controller="Bug" asp-action="UpdateStatus" method="post">
+            <div class="d-inline-block text-white bg-primary mb-3" style="max-width: 20rem;">
+                <h5 class="card-text font-weight-bold">
 
-            <div class="row">
-                <div class="col-sm-6">
-                    <div class="well">
-                        <h4>Description</h4>
-                        <p>Description</p>
+                    <label class="card-text font-weight-bold" asp-for="Status">Status:</label>
+                </h5>
+                <input type="hidden" asp-for="UserID" value="@Context.Session.GetInt32("ID")" />
+                <input type="hidden" asp-for="ID" value=@Model.ID />
+                <select asp-for="Status" class="form-control">
+                    <option value="InProgress">In Progress</option>
+                    <option value="Closed">Closed</option>
+                </select>
+                <span asp-validation-for="Status"></span>
+            </div>
+            <br />
+            <input type="submit" value="Update" />
+        </form>
+        <br />
+        <h5 class="card-text font-weight-bold">Comments:</h5>
+        <textarea>This bug card looks nice! @Model.Comments</textarea>
+        <form action="/Comment/Add">
+            <input type="submit" value="Add/Edit a Comment" />
+            @*#TODO - add capability to pass this bud id to the comment*@
+        </form>
+    </div>
+</div>
+
+@*
+    <div >
+        <div >
+            <div >
+                <div >
+                    <h4>Ticket: @Model.ID</h4>
+                    <h3>@Model.Status</h3>
+                    <form asp-controller="Bug" asp-action="UpdateStatus" method="post">
+                        <div class="d-inline-block text-white bg-primary mb-3" style="max-width: 20rem;">
+                            <label asp-for="Status"></label>
+                            <input type="hidden" asp-for="UserID" value="@Context.Session.GetInt32("ID")" />
+                            <input type="hidden" asp-for="ID" value=@Model.ID ; />
+                            <select asp-for="Status" class="form-control">
+                                <option value="InProgress">In Progress</option>
+                                <option value="Closed">Closed</option>
+                            </select>
+                            <span asp-validation-for="Status"></span>
+                        </div>
+                        <input type="submit" value="Update" />
+                    </form>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="well">
+                            <h4>Date</h4>
+                            <p>@Model.CreatedDate
+
+                                </p>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="well">
+                            <h4>User</h4>
+                            <p>@Model.UserID</p>
+                        </div>
                     </div>
                 </div>
-                <div class="col-sm-6">
-                    <div class="well">
-                        <h4>Comments</h4>
-                        <form action="/Comment/Add">
-                            <input type="submit" value="Add a Comment" />
-                            @*#TODO - add capability to pass this bud id to the comment*@
-                        <h4> Comment: @Model.Comments</h4>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="well">
+                            <h4>Subject</h4>
+                            <p>@Model.Subject</p>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="well">
+                            <h4>Admin</h4>
+                            <p>@Model.AdminID</p>
+                            <span asp-validation-for="AdminID"></span>
+                        </div>
+                    </div>
+                </div>
 
-                        </form>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="well">
+                            <h4>Description</h4>
+                            <p>Description</p>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="well">
+                            <h4>Comments</h4>
+                            <form action="/Comment/Add">
+                                <input type="submit" value="Add a Comment" />
+                                @*#TODO - add capability to pass this bud id to the comment
+                            <h4> Comment: @Model.Comments</h4>
+
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
+    </div>*@
 
-@*<div class="card text-white bg-primary mb-3" style="max-width: 20rem;">
-    <div class="card-header">@Model.Status Ticket#  @Model.ID - [@Model.CreatedDate] </div>
-    <div class="card-body">
-        <h4 class="card-title">Subject: @Model.Subject</h4>
-        <p class="card-text">Description:</p>
-        <textarea class="card-text">@Model.Description</textarea>
-        <p class="card-text">User ID: @Model.UserID</p>
-        <p class="card-text">Admin ID: @Model.AdminID</p>
-        <h5>Comments</h5>
-        <form action="/Comment/Add">
-            <input type="submit" value="Add a Comment" />
-        </form>
-    </div>
-</div>*@
+
 
 

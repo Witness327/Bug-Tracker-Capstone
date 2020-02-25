@@ -20,11 +20,5 @@ namespace Bug_Tracker2020.Controllers
             return View();
         }
 
-        //public IActionResult UnassignedBug()
-        //{
-        //   if ()
-
-        //    return Redirect("Index");
-        //}
     }
 }

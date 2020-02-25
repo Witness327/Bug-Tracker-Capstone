@@ -9,8 +9,14 @@ namespace Bug_Tracker2020.ViewModels
 {
     public class AddCommentViewModel
     {
-        [Required]
+
+        //public int ID { get; set; }
+       
         public int UserID { get; set; }
+        public string UserFirstName { get; set; }
+        public int AdminID { get; set; }
+
+        public string AdminFirstName { get; set; }
 
         [Required]
         public string Date { get; set; }
@@ -19,7 +25,7 @@ namespace Bug_Tracker2020.ViewModels
         public string CommentBody { get; set; }
 
         [Required]
-        public Bug Bug { get; set; }
+        public int BugID { get; set; }
 
 
 

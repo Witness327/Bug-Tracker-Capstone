@@ -8,17 +8,23 @@ namespace Bug_Tracker2020.ViewModels
 {
     public class AddUserViewModel
     {
-        [Required]
+        [Required(ErrorMessage = "You must enter your first name")]
+        [Display(Name = "First Name")]
         public string FirstName { get; set; }
 
-        [Required]
-        [EmailAddress]
+        [Required(ErrorMessage = "You must enter an email address")]
+        [DataType(DataType.EmailAddress)]
+        [Display(Name = "Email Address")]
         public string EmailAddress { get; set; }
 
-        [Required, DataType(DataType.Password)]
+        [Required(ErrorMessage = "You must enter a password")]
+        [DataType(DataType.Password)]
         public string Password { get; set; }
 
-        [DataType(DataType.Password), Compare(nameof(Password))]
+        [Required(ErrorMessage = "You must re-enter your password")]
+        [DataType(DataType.Password)]
+        [Display(Name = "Verify Password")]
+        [Compare("Password", ErrorMessage = "Both passwords must match.")]
         public string ConfirmPassword { get; set; }
 
         [Required]

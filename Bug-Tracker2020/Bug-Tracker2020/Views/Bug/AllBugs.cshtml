@@ -5,21 +5,21 @@
     ViewData["Title"] = "All Bugs";
 }
 
-    <h1>All Bugs</h1>
+<h1>All Bugs</h1>
 
 @foreach (var allBugs in Model)
 {
-    <div class="card text-white bg-primary mb-3" style="max-width: 20rem;">
-        <div class="card-header"><h4>@allBugs.Status Ticket#  @allBugs.ID - [@allBugs.CreatedDate] </h4></div>
-        <div class="card-body">
-            <h4 class="card-header">Subject: @allBugs.Subject</h4>
-            <p class="card-text">Description: @allBugs.Description</p>
-            <p class="card-text">User ID: @allBugs.UserID</p>
-            <p class="card-text">Admin ID: @allBugs.AdminID</p>
-            <h5>Comments</h5>
-            <form action="/Comment/Add">
-                <input type="submit" value="Add a Comment" />
-            </form>
-        </div>
+<div class="d-inline-block text-white bg-primary mb-3" style="max-width: 20rem;">
+    <div class="card-header"><h4>@allBugs.Status Ticket#  @allBugs.ID - [@allBugs.CreatedDate] </h4></div>
+    <div class="card-body">
+        <p class="card-text font-weight-bold">Subject: @allBugs.Subject</p>
+        <p class="card-text">Description: @allBugs.Description</p>
+        <p class="card-text">User ID: @allBugs.UserFirstName</p>
+        <p class="card-text">Admin ID: @allBugs.AdminFirstName</p>
+        <h5>Comments</h5>
+        <form action="/Comment/Add">
+            <input type="submit" value="Add a Comment" />
+        </form>
     </div>
+</div>
 }

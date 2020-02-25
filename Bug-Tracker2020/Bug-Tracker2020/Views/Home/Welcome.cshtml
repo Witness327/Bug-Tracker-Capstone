@@ -1,20 +1,14 @@
-﻿@model Bug_Tracker2020.Models.User
-
-
-    @*<h1>Hello, @Model.EmailAddress!
-    </h1>*@
+﻿@using Microsoft.AspNetCore.Http;
 
 
 
-@using Microsoft.AspNetCore.Http;
+<h1>Hello, @Context.Session.GetString("firstname")!</h1>
+
+<h2>Would you like to <a asp-controller="Bug" asp-action="Add">Report a Bug</a> or <a asp-controller="Bug" asp-action="UserBugs">View Your Bugs</a>?</h2>
 
 
 
-    <h3>Success Page</h3>
-        Welcome @Context.Session.GetString("firstname")
-   
-
-    @*<ul>
+@*<ul>
         @foreach (string key in Context.Session.Keys)
         {
             <li>@Context.Session.GetInt32("id")</li>
@@ -22,7 +16,7 @@
     </ul>*@
 
 
-        <br>
-        @*<a asp-controller="Home" asp-action="Logout">Logout</a>*@
+<br>
+@*<a asp-controller="Home" asp-action="Logout">Logout</a>*@
 
 @*View all tickets on the welcome screen?*@

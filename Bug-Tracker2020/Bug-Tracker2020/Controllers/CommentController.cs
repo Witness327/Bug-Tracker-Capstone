@@ -41,13 +41,17 @@ namespace Bug_Tracker2020.Controllers
 
         public IActionResult Add()
         {
-            return View();
+            AddCommentViewModel addCommentViewModel = new AddCommentViewModel();
+            return View(addCommentViewModel);
         }
+
 
         //Create a comment
         [HttpPost]
         public IActionResult Add(AddCommentViewModel addCommentViewModel)
         {
+            var aBug = context.Bugs.Single(b => b.ID == addCommentViewModel.BugID);
+
             if (ModelState.IsValid)
             {
                 Comment newComment = new Comment
@@ -55,13 +59,13 @@ namespace Bug_Tracker2020.Controllers
                     UserID = addCommentViewModel.UserID,
                     Date = addCommentViewModel.Date,
                     CommentBody = addCommentViewModel.CommentBody,
-                    Bug = Find(addCommentViewModel.Bug.ID),
+                    BugID = addCommentViewModel.BugID,
 
                 };
                 context.Comments.Add(newComment);
                 context.SaveChanges();
 
-                return Redirect("/Bug/SingleBug?id=" + addCommentViewModel.Bug.ID);
+                return Redirect("/Bug/SingleBug?id=" + addCommentViewModel.BugID);
                 //return Redirect("/Bug/SingleBug?id=" + newBug.ID);
             }
             else
@@ -80,29 +84,17 @@ namespace Bug_Tracker2020.Controllers
 
             // new IList<Comment> CommList;
             //TODO addthe feature to filter by user ID
-            var aComment = context.Comments.OrderByDescending(c => c.Bug.ID == id);
+            var aComment = context.Comments.OrderByDescending(c => c.BugID == id);
 
 
 
             return View(aComment);
         }
 
-
-
-        //// GET: Comment/Edit/5
-        //public ActionResult Edit(int id)
-        //{
-        //    return View();
-        //}
-
-
-
-
-
         // POST: Comment/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public ActionResult Delete(int id)
         {
             try
             {
@@ -110,7 +102,7 @@ namespace Bug_Tracker2020.Controllers
                 context.Comments.Remove(delcomment);
                 context.SaveChanges();
 
-                return RedirectToAction(nameof(Index));
+                return Redirect ("/");
             }
             catch
             {

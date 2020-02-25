@@ -16,6 +16,10 @@
         <form asp-action="Add" asp-controller="Bug" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
+                <input asp-for="UserFirstName" class="form-control" value=@Context.Session.GetString("firstname") type="hidden" />
+                <span asp-validation-for="UserFirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <input asp-for="UserID" class="form-control" value=@Context.Session.GetInt32("id") type="hidden" />
                 <span asp-validation-for="UserID" class="text-danger"></span>
             </div>
