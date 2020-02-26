@@ -19,54 +19,42 @@
         </tr>
     </thead>
     <tbody class="table-success">
-
-        @*<tr>
-                <th scope="row">Status:</th>
-                <td>@Model.Status</td>
-                <td>Column content</td>
-                <td>Column content</td>
-            </tr>*@
-
-        <tr class="table-light">
+        <tr>
             <th scope="row">Created Date:</th>
             <td>@Model.CreatedDate</td>
-            @*<td>Column content</td>
-                <td>Column content</td>*@
+
         </tr>
 
         <tr>
             <th scope="row">Subject:</th>
             <td>@Model.Subject</td>
-            @*<td>Column content</td>
-                <td>Column content</td>*@
+
         </tr>
 
-        <tr class="table-light">
+        <tr>
             <th scope="row">Description:</th>
             <td>@Model.Description</td>
-            @*<td>Column content</td>
-                <td>Column content</td>*@
+
         </tr>
 
         <tr class="table-success">
             <th scope="row">Created: @Model.UserFirstName</th>
             <td>Admin Name: @Model.AdminFirstName</td>
-            @*<td>Column content</td>
-                <td>Column content</td>*@
         </tr>
-
-        @*<tr class="table-success">
-                <th scope="row">Admin:</th>
-                <td>@Model.AdminFirstName</td>
-                <td>Column content</td>
-                <td>Column content</td>
-            </tr>*@
-
     </tbody>
 </table>
 
-<h4><a class="btn btn-success" href="Edit?id=@Model.ID">Edit</a></h4>
-<h4><a class="btn btn-success" href="AddComment?id=@Model.ID">Add A Comment</a></h4>
+@if (@Context.Session.GetString("emailaddress").Contains("@bugtracker.com"))
+{
+    <h4><a class="btn btn-success" href="Edit?id=@Model.ID">Edit</a></h4>
+    @*<h4><a class="btn btn-success" href="AddComment?id=@Model.ID">Add A Comment</a></h4>*@
+}
+<br />
+<form action="AddComment?id=@Model.ID">
+    <input type="hidden" value=@Model.ID asp-for=@Model.ID />
+    <input class="btn btn-success" type="submit" value="Add Comment" />
+</form>
+<br />
 
 @if (Model.Comments == null)
 {
@@ -78,112 +66,117 @@ else
 
     foreach (var comments in Model.Comments)
     {
-        @*<ul>
-            <li>@comments.Date</li>
-            <li>@comments.CommentBody</li>
-            <li>@comments.UserID</li>
-        </ul>*@
+        @*<div class="text-white bg-primary mb-3" style="max-width: 20rem;">
+            <div class="card-header"><h4>@comments.Date</h4></div>
+            <div class="card-body">
+                <p class="card-text font-weight-bold">Comment: @comments.CommentBody</p>
+                <p class="card-text">Comment Created By: @comments.UserFirstName</p>
+                <form action="EditComment?id=@comments.ID">
+                    <input type="hidden" value="@comments.ID" asp-for="ID" />
+                    <input type="submit" value="Edit" />
+                </form>
+                <a href="/Comment">Delete</a>
+                <form action="/Comment/Delete?id=@comments.ID">
+                    <input type="submit" value="Delete" />
+                </form>
+
+            </div>
+        </div>*@
+
+        <br />
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">@comments.Date</h4>
+                <h6 class="card-subtitle mb-2 text-muted">Created by: @comments.UserFirstName</h6>
+                <p class="card-text">@comments.CommentBody</p>
+                <form action="EditComment?id=@comments.ID">
+                    <input type="hidden" value="@comments.ID" asp-for="ID" />
+                    <input type="submit" value="Edit" />
+                </form>
+                <form action="/Comment/Delete?id=@comments.ID">
+                    <input type="submit" value="Delete" />
+                </form>
+            </div>
+        </div>
+
+    }
+}
 
 
+@*<div class="container-fluid">
+        <div class="row content">
+            <div class="col-sm-9">
+                <div class="well">
+                    <h4></h4>
+                    <h3>Status: @Model.Status</h3>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="well">
+                            <h4>Created Date</h4>
+                            <p>
+                                @Model.CreatedDate
 
-
-            <div class="text-white bg-primary mb-3" style="max-width: 20rem;">
-                <div class="card-header"><h4>@comments.Date</h4></div>
-                <div class="card-body">
-                    <p class="card-text font-weight-bold">Comment: @comments.CommentBody</p>
-                    <p class="card-text">Description: @comments.UserID</p>
-
-                    <h5>Comments</h5>
-                    <form action="/Bug/AddComment?id=@comments.BugID">
-                        <input type="submit" value="Add a Comment" />
-                    </form>
-                    <a href="/edit">Edit</a>
-                    <a href="/Comment">Delete</a>
-                    <form action="/Delete?id=@comments.ID" method="post">
-                        <input type="submit" value="Delete"/>
-                        </form>
-
+                        </p>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="well">
+                        <h4>User</h4>
+                        <p>@Model.UserFirstName</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="well">
+                        <h4>Subject</h4>
+                        <p>@Model.Subject</p>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="well">
+                        <h4>Admin</h4>
+                        <p>@Model.AdminFirstName</p>
+                        <span asp-validation-for="AdminID"></span>
+                    </div>
                 </div>
             </div>
 
-        }
-    }
-
-
-    @*<div class="container-fluid">
-            <div class="row content">
-                <div class="col-sm-9">
+            <div class="row">
+                <div class="col-sm-6">
                     <div class="well">
-                        <h4></h4>
-                        <h3>Status: @Model.Status</h3>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-4">
-                            <div class="well">
-                                <h4>Created Date</h4>
-                                <p>
-                                    @Model.CreatedDate
-
-                            </p>
-                        </div>
-                    </div>
-                    <div class="col-sm-4">
-                        <div class="well">
-                            <h4>User</h4>
-                            <p>@Model.UserFirstName</p>
-                        </div>
+                        <h4>Description</h4>
+                        <p>Description</p>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-sm-4">
-                        <div class="well">
-                            <h4>Subject</h4>
-                            <p>@Model.Subject</p>
-                        </div>
-                    </div>
-                    <div class="col-sm-4">
-                        <div class="well">
-                            <h4>Admin</h4>
-                            <p>@Model.AdminFirstName</p>
-                            <span asp-validation-for="AdminID"></span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-sm-6">
-                        <div class="well">
-                            <h4>Description</h4>
-                            <p>Description</p>
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="well">
-                            <h4>Comments</h4>
-                            <form action="/Bug/AddComment">
-                                <input type="submit" value="Add a Comment" />
-                            </form>
-                            <h4> Comment: @Model.Comments</h4>
-                        </div>
+                <div class="col-sm-6">
+                    <div class="well">
+                        <h4>Comments</h4>
+                        <form action="/Bug/AddComment">
+                            <input type="submit" value="Add a Comment" />
+                        </form>
+                        <h4> Comment: @Model.Comments</h4>
                     </div>
                 </div>
             </div>
         </div>
-        </div>*@
+    </div>
+    </div>*@
 
-    @*<div class="card text-white bg-primary mb-3" style="max-width: 20rem;">
-            <div class="card-header">@Model.Status Ticket#  @Model.ID - [@Model.CreatedDate] </div>
-            <div class="card-body">
-                <h4 class="card-title">Subject: @Model.Subject</h4>
-                <p class="card-text">Description:</p>
-                <textarea class="card-text">@Model.Description</textarea>
-                <p class="card-text">User ID: @Model.UserID</p>
-                <p class="card-text">Admin ID: @Model.AdminID</p>
-                <h5>Comments</h5>
-                <form action="/Comment/Add">
-                    <input type="submit" value="Add a Comment" />
-                </form>
-            </div>
-        </div>*@
+@*<div class="card text-white bg-primary mb-3" style="max-width: 20rem;">
+        <div class="card-header">@Model.Status Ticket#  @Model.ID - [@Model.CreatedDate] </div>
+        <div class="card-body">
+            <h4 class="card-title">Subject: @Model.Subject</h4>
+            <p class="card-text">Description:</p>
+            <textarea class="card-text">@Model.Description</textarea>
+            <p class="card-text">User ID: @Model.UserID</p>
+            <p class="card-text">Admin ID: @Model.AdminID</p>
+            <h5>Comments</h5>
+            <form action="/Comment/Add">
+                <input type="submit" value="Add a Comment" />
+            </form>
+        </div>
+    </div>*@
 
 

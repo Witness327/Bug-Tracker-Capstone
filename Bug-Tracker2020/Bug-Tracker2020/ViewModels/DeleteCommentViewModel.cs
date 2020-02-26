@@ -1,5 +1,4 @@
-﻿using Bug_Tracker2020.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -7,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace Bug_Tracker2020.ViewModels
 {
-    public class AddCommentViewModel
+    public class DeleteCommentViewModel
     {
 
         public int ID { get; set; }
-       
+
         public int UserID { get; set; }
         public string UserFirstName { get; set; }
         public int AdminID { get; set; }
@@ -27,9 +26,7 @@ namespace Bug_Tracker2020.ViewModels
         [Required]
         public int BugID { get; set; }
 
-
-
-        public AddCommentViewModel()
+        public DeleteCommentViewModel()
         {
         }
     }

@@ -1,0 +1,12 @@
+﻿@using Microsoft.AspNetCore.Http;
+@{
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+
+
+
+<h1>Hello, @Context.Session.GetString("firstname")!</h1>
+
+<h2>Would you like to <a asp-controller="Bug" asp-action="Add">Report a Bug</a> or <a asp-controller="Bug" asp-action="AdminBugs">View Your Bugs</a>?</h2>
+
+

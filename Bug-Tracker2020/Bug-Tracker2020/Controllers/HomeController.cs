@@ -22,7 +22,7 @@ namespace Bug_Tracker2020.Controllers
         //{
         //    _logger = logger;
         //}
-        
+
         private BugDbContext context;
 
         public HomeController(BugDbContext dbContext)
@@ -53,27 +53,30 @@ namespace Bug_Tracker2020.Controllers
         }
 
 
-        
+
         [HttpPost]
         public ActionResult Login(LoginViewModel loginViewModel)
         {
             if (ModelState.IsValid)
             {
                 //Logic if Person is an admin
-                if (loginViewModel.EmailAddress.Contains("bugtracker.com")){
+                if (loginViewModel.EmailAddress.Contains("bugtracker.com"))
+                {
                     var obj = context.Admins.Where(a => a.EmailAddress.Equals(loginViewModel.EmailAddress) && a.Password.Equals(loginViewModel.Password)).FirstOrDefault();
                     if (obj != null)
                     {
                         HttpContext.Session.SetString("emailaddress", obj.EmailAddress);
                         HttpContext.Session.SetInt32("id", obj.AdminID);
                         HttpContext.Session.SetString("firstname", obj.FirstName);
-                        HttpContext.Session.SetString("AdminRole", obj.AdminRole.ToString());
-                        return View("Welcome");
+                        return View("AdminWelcome");
                     }
 
                 }
+
+
                 //Logic for all non-Admins
-                else {
+                else
+                {
                     var obj = context.Users.Where(a => a.EmailAddress.Equals(loginViewModel.EmailAddress) && a.Password.Equals(loginViewModel.Password)).FirstOrDefault();
                     if (obj != null)
                     {
@@ -84,11 +87,14 @@ namespace Bug_Tracker2020.Controllers
                         return View("Welcome");
                     }
                 }
-
+                
             }
-            //TODO: We need to create a message for incorrect password
             return View("Login");
         }
+            //TODO: We need to create a message for incorrect password
+           
+    
+       
 
         [Route("logout")]
         [HttpGet]

@@ -92,21 +92,44 @@ namespace Bug_Tracker2020.Controllers
         }
 
         // POST: Comment/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id)
+        
+        
+        public IActionResult Delete(int id)
         {
             try
             {
                 var delcomment = context.Comments.Find(id);
+                //if Logged in Person is an admin
+                if (HttpContext.Session.GetString("emailaddress").Contains("@bugtracker.com"))
+                {
+                    if ((delcomment.AdminFirstName == HttpContext.Session.GetString("firstname")) && (delcomment.AdminID == HttpContext.Session.GetInt32("id"))){
+                        context.Comments.Remove(delcomment);
+                        context.SaveChanges();
+                    }
+                }
+                //If Logged in Person is not an Admin
+                else if (HttpContext.Session.GetString("emailaddress").Contains("@")) {
+                    if ((delcomment.UserFirstName == HttpContext.Session.GetString("firstname")) && (delcomment.UserID == HttpContext.Session.GetInt32("id"))){
+                        context.Comments.Remove(delcomment);
+                        context.SaveChanges();
+                    }
+                }
+
+                else
+                {
+                    return Redirect("/Login");
+                }
+                
+
                 context.Comments.Remove(delcomment);
                 context.SaveChanges();
 
+                //TODO where to go
                 return Redirect ("/");
             }
             catch
             {
-                return View();
+                return Redirect("/");
             }
         }
     }

@@ -1,4 +1,4 @@
-﻿@model Bug_Tracker2020.ViewModels.AddCommentViewModel;
+﻿@model Bug_Tracker2020.Models.Comment
 
 @{
     ViewData["Title"] = "Add";
@@ -9,11 +9,11 @@
 @using Microsoft.AspNetCore.Http;
 
 <hr />
+
 <div class="row">
     <div class="col-md-4">
         <form asp-action="AddComment" asp-controller="Bug" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
             <div class="form-group">
                 <input asp-for="Date" class="form-control" type="hidden" value="@DateTime.Now" />
             </div>
@@ -23,14 +23,14 @@
                 <span asp-validation-for="CommentBody" class="text-danger"></span>
             </div>
             <div>
-                <label asp-for="BugID" class="control-label">Bug ID</label>
-                <input asp-for="BugID" class="form-control" type="number" />
+                @*<label asp-for="BugID" class="control-label">Bug ID</label>*@
+                <input asp-for="BugID" value=@Model.BugID class="form-control" type="hidden" />
             </div>
             <div>
                 <input asp-for="UserID" class="form-control" type="hidden" value=@Context.Session.GetInt32("id") />
             </div>
             <div>
-                <input asp-for="UserFirstName" class="form-control" type="hidden" value=@Context.Session.GetInt32("firstname") />
+                <input asp-for="UserFirstName" class="form-control" type="hidden" value=@Context.Session.GetString("firstname") />
             </div>
 
             <div class="form-group">

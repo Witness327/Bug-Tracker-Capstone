@@ -1,17 +1,17 @@
 ﻿@model List<Bug_Tracker2020.Models.Bug>
 
-
 @{
     Layout = "~/Views/Shared/_Admin.cshtml";
 }
-<h1>All Bugs</h1>
+
+<h1>My Bugs</h1>
 
 @foreach (var allBugs in Model)
 {
-<div class="d-inline-block text-white bg-primary mb-3" style="max-width: 20rem;">
-    <div class="card-header"><h4>@allBugs.Status Ticket#  @allBugs.ID - [@allBugs.CreatedDate] </h4></div>
+<div class="card text-white bg-primary mb-3" style="max-width: 20rem;">
+    <div class="card-header">@allBugs.Status Ticket#  @allBugs.ID - [@allBugs.CreatedDate] </div>
     <div class="card-body">
-        <p class="card-text font-weight-bold">Subject: @allBugs.Subject</p>
+        <h4 class="card-title">Subject: @allBugs.Subject</h4>
         <p class="card-text">Description: @allBugs.Description</p>
         <p class="card-text">User ID: @allBugs.UserFirstName</p>
         <p class="card-text">Admin ID: @allBugs.AdminFirstName</p>
@@ -20,5 +20,5 @@
             <input type="submit" value="Add a Comment" />
         </form>
     </div>
-</div>
+</div>  
 }

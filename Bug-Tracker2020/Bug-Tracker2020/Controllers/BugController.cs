@@ -31,7 +31,7 @@ namespace Bug_Tracker2020.Controllers
         public async Task<IActionResult> Edit(int? id)
         {
             //Check if user logged in:
-            if (HttpContext.Session.GetString("emailaddress") == null)
+            if (HttpContext.Session.GetString("AdminRole") == null)
             {
                 return Redirect("/Home/Login");
             }
@@ -94,6 +94,10 @@ namespace Bug_Tracker2020.Controllers
 
         public IActionResult SingleBug(int id)
         {
+            if (HttpContext.Session.GetString("emailaddress") == null)
+            {
+                return Redirect("Home/Login");
+            }
             try
             {
 
@@ -123,6 +127,10 @@ namespace Bug_Tracker2020.Controllers
 
         public IActionResult UserSingleBug(int id)
         {
+            if (HttpContext.Session.GetString("emailaddress") == null)
+            {
+                return Redirect("/Home/Login");
+            }
             if (id == 0)
             {
                 //ToDO - Add logic to handle if no bug exists.
@@ -139,16 +147,38 @@ namespace Bug_Tracker2020.Controllers
         {
             if (HttpContext.Session.GetString("emailaddress") == null)
             {
-                return Redirect("Login");
+                return Redirect("Home/Login");
             }
+           
 
             User user = context.Users.Single(u => u.EmailAddress == HttpContext.Session.GetString("emailaddress"));
+            
+
             List<Bug> bugs = context.Bugs.Where(b => b.UserID == user.UserID).ToList();
+            return View(bugs);
+        }
+
+        public IActionResult AdminBugs()
+        {
+            if (HttpContext.Session.GetString("emailaddress") == null)
+            {
+                return Redirect("Home/Login");
+            }
+
+
+            Admin admin = context.Admins.Single(u => u.EmailAddress == HttpContext.Session.GetString("emailaddress"));
+
+
+            List<Bug> bugs = context.Bugs.Where(b => b.AdminID == admin.AdminID).ToList();
             return View(bugs);
         }
 
         public IActionResult AllBugs()
         {
+            if (HttpContext.Session.GetString("emailaddress") == null)
+            {
+                return Redirect("Home/Login");
+            }
 
 
             //User user = context.Users.Single(u => u.EmailAddress == HttpContext.Session.GetString("EmailAddress"));
@@ -158,19 +188,23 @@ namespace Bug_Tracker2020.Controllers
 
         public List<Comment> BugComments(int id)
         {
+            //if (HttpContext.Session.GetString("emailaddress") == null)
+            //{
+            //    return Redirect("Home/Login");
+            //}
             Bug bug = context.Bugs.Single(u => u.ID == id);
             List<Comment> comments = context.Comments.Where(b => b.BugID == bug.ID).ToList();
-        
+
             bug.Comments = comments;
             context.Update(bug);
             context.SaveChanges();
-            
+
             return comments;
         }
 
         public IActionResult UpdateCommentList()
         {
-            
+
             return View();
         }
         public IActionResult BugSearch()
@@ -181,6 +215,10 @@ namespace Bug_Tracker2020.Controllers
         [HttpPost]
         public IActionResult BugSearch(int id)
         {
+            if (HttpContext.Session.GetString("emailaddress") == null)
+            {
+                return Redirect("Home/Login");
+            }
             if (id == 0)
             {
                 return Redirect("/");
@@ -204,6 +242,10 @@ namespace Bug_Tracker2020.Controllers
         [HttpPost]
         public IActionResult UpdateStatus(string status, int id, string lastmodifieddate)
         {
+            if (HttpContext.Session.GetString("emailaddress") == null)
+            {
+                return Redirect("/Home/Login");
+            }
 
             var aBug = context.Bugs.Single(b => b.ID == id);
             aBug.Status = status;
@@ -216,6 +258,11 @@ namespace Bug_Tracker2020.Controllers
 
         public IActionResult UpdateAdmin(int id, string AdminFirstName)
         {
+
+            if (HttpContext.Session.GetString("emailaddress") == null)
+            {
+                return Redirect("/Home/Login");
+            }
             IList<Admin> Names = context.Admins.Include(c => c.FirstName).ToList();
 
             //Bug aBug = context.Bugs.Single(b => b.ID == id);
@@ -225,20 +272,6 @@ namespace Bug_Tracker2020.Controllers
 
             return View(Names);
         }
-
-        //public ICollection<Comment> LocateComments(int id)
-        //{
-
-        //    // new IList<Comment> CommList;
-        //    //TODO addthe feature to filter by user ID
-        //    var aComment = context.Comments.OrderByDescending(c => c.BugID == id);
-        //    foreach (var comm in aComment)
-        //    {
-        //        context.Comments.Add(comm);
-        //    }
-
-        //    return Comments;
-        //}
 
         public User Find(string emailaddress)
         {
@@ -251,6 +284,10 @@ namespace Bug_Tracker2020.Controllers
         //Status is automatically new and AdminID is automatically 1 until is is reassigned
         public IActionResult Add(AddBugViewModel bugViewModel)
         {
+            if (HttpContext.Session.GetString("emailaddress") == null)
+            {
+                return Redirect("/Home/Login");
+            }
 
             if (ModelState.IsValid)
             {
@@ -273,6 +310,12 @@ namespace Bug_Tracker2020.Controllers
                 return Redirect("/Bug/UserSingleBug?id=" + newBug.ID);
             }
 
+            else
+            {
+                ModelState.AddModelError("ID", "No Bug Found");
+                ModelState.AddModelError("username", "Please log in.");
+            }
+
             return View();
         }
 
@@ -291,16 +334,33 @@ namespace Bug_Tracker2020.Controllers
         }
 
         //Functionality to add Comments
-        public IActionResult AddComment()
+        public IActionResult AddComment(int id)
         {
-            AddCommentViewModel addCommentViewModel = new AddCommentViewModel();
-            return View(addCommentViewModel);
+            if (HttpContext.Session.GetString("emailaddress") == null)
+            {
+                return Redirect("/Home/Login");
+            }
+            Comment this_comment = new Comment();
+            this_comment.BugID = id;
+            return View(this_comment);
         }
 
         [HttpPost]
         public IActionResult AddComment(AddCommentViewModel addCommentViewModel)
         {
-            var aBug = context.Bugs.Single(b => b.ID == addCommentViewModel.BugID);
+            if (HttpContext.Session.GetString("emailaddress") == null)
+            {
+                return Redirect("/Home/Login");
+            }
+            try
+            {
+                var aBug = context.Bugs.Single(b => b.ID == addCommentViewModel.BugID);
+            }
+            catch
+            {
+                return Redirect("/Home/Login");
+            }
+
 
             if (ModelState.IsValid)
             {
@@ -326,13 +386,44 @@ namespace Bug_Tracker2020.Controllers
             }
             else
             {
+                ModelState.AddModelError("ID", "No Bug Found");
+                ModelState.AddModelError("username", "Please log in.");
+
                 var errors = ModelState.Select(x => x.Value.Errors)
                                        .Where(y => y.Count > 0)
                                        .ToList();
             }
 
-            return View("Index");
+            return Redirect("/Home/Login");
 
         }
+
+
+
+
+        //Functionality to edit Comments
+        public IActionResult EditComment(int id)
+        {
+
+            Comment this_comment = context.Comments.Single(u => u.ID == id);
+            return View(this_comment);
+        }
+
+        [HttpPost]
+        public IActionResult EditComment(EditCommentViewModel editCommentViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                Comment this_comment = context.Comments.Single(u => u.ID == editCommentViewModel.ID);
+
+                this_comment.CommentBody = editCommentViewModel.CommentBody;
+                context.Comments.Update(this_comment);
+                context.SaveChanges();
+            }
+            return Redirect("BugSearch");
+        }
+    
+
+
     }
 }

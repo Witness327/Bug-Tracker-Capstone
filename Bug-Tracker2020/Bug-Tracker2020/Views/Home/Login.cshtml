@@ -1,6 +1,6 @@
 ﻿@model Bug_Tracker2020.ViewModels.LoginViewModel
 @{
-    ViewData["Title"] = "Login";
+    Layout = "~/Views/Shared/_Start.cshtml";
 }
 
 <h1>Login</h1>
@@ -8,15 +8,13 @@
     <table border="0" cellpadding="2" cellspacing="2">
         <tr>
             <td>Email Address</td>
-            <td><input type="text" name="emailaddress"></td>
-            <span asp-validation-for="EmailAddress"></span>
+            <td><input type="email" name="EmailAddress"></td>
         </tr>
         <tr>
             <td>Password</td>
             <td><input type="password" name="password"></td>
         </tr>
         <tr>
-            <td>Login</td>
             <td><input type="submit" value="Login"></td>
         </tr>
     </table>

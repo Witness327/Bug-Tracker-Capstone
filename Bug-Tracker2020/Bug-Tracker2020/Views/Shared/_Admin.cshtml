@@ -25,21 +25,20 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                     <ul class="nav navbar-nav navbar-right">
                         <li class="nav-item active">
-                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Welcome">Hello @Context.Session.GetString("firstname")</a>
-                        </li>
-                        <li class="nav-item active">
                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Logout">Logout</a>
                         </li>
                     </ul>
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item active">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Bug" asp-action="UserBugs">View My Bugs</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Bug" asp-action="BugSearch">Find A Bug</a>
                         </li>
                         <li class="nav-item active">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Bug" asp-action="Add">Report A Bug</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Bug" asp-action="AllBugs">View All Bugs</a>
+                        </li>
+                        <li class="nav-item active">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Bug" asp-action="AdminBugs">View My Bugs</a>
                         </li>
                     </ul>
-
                 </div>
             </div>
         </nav>

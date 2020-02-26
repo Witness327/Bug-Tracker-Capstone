@@ -8,3 +8,5 @@
 /Bug-Tracker2020/Bug-Tracker2020/obj
 /.vs
 /Bug-Tracker2020/.vs/Bug-Tracker2020
+/Bug-Tracker2020/Bug-Tracker2020/Migrations/20200225181547_InitialMigration.cs
+/Bug-Tracker2020/Bug-Tracker2020/Migrations/20200225181547_InitialMigration.Designer.cs
